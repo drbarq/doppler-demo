@@ -144,7 +144,6 @@ function getMissingEnvVars(serviceName: string): string[] {
   const requiredVars: Record<string, string[]> = {
     Supabase: ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY"],
     Stripe: ["NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "STRIPE_SECRET_KEY"],
-    SendGrid: ["SENDGRID_API_KEY", "SENDGRID_SENDER_EMAIL"],
     OpenWeatherMap: ["OPENWEATHER_API_KEY"],
   };
 

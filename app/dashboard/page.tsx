@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import { StatusDashboard } from "../../components/dashboard/status-dashboard";
 import { PaymentForm } from "../../components/dashboard/payment-form";
-import { EmailTester } from "../../components/dashboard/email-tester";
 import { WeatherWidget } from "../../components/dashboard/weather-widget";
+import { StripeDataTables } from "../../components/dashboard/stripe-data-tables";
 
 export default function DashboardPage() {
   return (
@@ -14,17 +14,18 @@ export default function DashboardPage() {
           <StatusDashboard />
         </Suspense>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="p-6 bg-white rounded-lg shadow-md">
             <PaymentForm />
           </div>
           <div className="p-6 bg-white rounded-lg shadow-md">
-            <EmailTester />
+            <WeatherWidget />
           </div>
         </div>
 
         <div className="p-6 bg-white rounded-lg shadow-md">
-          <WeatherWidget />
+          <h2 className="text-2xl font-bold mb-6">Stripe Dashboard</h2>
+          <StripeDataTables />
         </div>
       </div>
     </div>

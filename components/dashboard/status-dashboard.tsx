@@ -50,16 +50,6 @@ async function checkStripeConnection() {
   }
 }
 
-async function checkSendGridConnection() {
-  try {
-    const response = await fetch("/api/health/sendgrid");
-    const data = await response.json();
-    return { isConnected: data.isConnected, error: data.error };
-  } catch (error) {
-    return { isConnected: false, error: "Failed to check SendGrid connection" };
-  }
-}
-
 async function checkWeatherApiConnection() {
   try {
     const response = await fetch("/api/health/weather");
@@ -81,7 +71,7 @@ async function checkWeatherApiConnection() {
 
 export const StatusDashboard = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-6xl mx-auto">
       <ServiceStatusCard
         serviceName="Supabase"
         logoSrc="/images/service-logos/supabase.svg"
@@ -91,11 +81,6 @@ export const StatusDashboard = () => {
         serviceName="Stripe"
         logoSrc="/images/service-logos/stripe.svg"
         checkStatus={checkStripeConnection}
-      />
-      <ServiceStatusCard
-        serviceName="SendGrid"
-        logoSrc="/images/service-logos/sendgrid.svg"
-        checkStatus={checkSendGridConnection}
       />
       <ServiceStatusCard
         serviceName="OpenWeatherMap"

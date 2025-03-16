@@ -53,22 +53,6 @@ export const validateConfig = (): ConfigError[] => {
     });
   }
 
-  // SendGrid validation
-  if (!process.env.SENDGRID_API_KEY) {
-    errors.push({
-      key: "SENDGRID_API_KEY",
-      message: "SendGrid API key is required",
-      serviceName: "SendGrid",
-    });
-  }
-  if (!process.env.SENDGRID_FROM_EMAIL) {
-    errors.push({
-      key: "SENDGRID_FROM_EMAIL",
-      message: "SendGrid sender email is required",
-      serviceName: "SendGrid",
-    });
-  }
-
   // OpenWeatherMap validation
   if (!process.env.OPENWEATHER_API_KEY) {
     errors.push({
