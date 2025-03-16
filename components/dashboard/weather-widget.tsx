@@ -6,6 +6,10 @@ interface WeatherData {
   main: {
     temp: number;
     humidity: number;
+    feels_like: number;
+    temp_min: number;
+    temp_max: number;
+    pressure: number;
   };
   weather: Array<{
     main: string;
@@ -13,6 +17,15 @@ interface WeatherData {
     icon: string;
   }>;
   name: string;
+  wind: {
+    speed: number;
+    deg: number;
+  };
+  sys: {
+    sunrise: number;
+    sunset: number;
+    country: string;
+  };
 }
 
 export const WeatherWidget = () => {
@@ -62,8 +75,15 @@ export const WeatherWidget = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const formatTime = (timestamp: number) => {
+    return new Date(timestamp * 1000).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   return (
-    <div className="max-w-md mx-auto">
+    <div className="max-w-4xl mx-auto">
       <h3 className="text-xl font-semibold mb-4">
         Test Weather API Integration
       </h3>
@@ -106,20 +126,78 @@ export const WeatherWidget = () => {
         {error && <div className="text-red-600 text-sm">{error}</div>}
 
         {weatherData && !loading && !error && (
-          <div className="bg-white rounded-lg border p-4">
-            <div className="flex items-center justify-between">
+          <div className="bg-white rounded-lg border p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h4 className="text-lg font-medium">{weatherData.name}</h4>
-                <p className="text-gray-500">
-                  {weatherData.weather[0].description}
-                </p>
-              </div>
-              <div className="text-right">
-                <div className="text-3xl font-bold">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h4 className="text-2xl font-medium">
+                      {weatherData.name}, {weatherData.sys.country}
+                    </h4>
+                    <p className="text-lg text-gray-500 capitalize">
+                      {weatherData.weather[0].description}
+                    </p>
+                  </div>
+                  <img
+                    src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+                    alt={weatherData.weather[0].description}
+                    className="w-16 h-16"
+                  />
+                </div>
+                <div className="text-5xl font-bold mb-4">
                   {Math.round(weatherData.main.temp)}°C
                 </div>
-                <div className="text-gray-500">
-                  Humidity: {weatherData.main.humidity}%
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-gray-500">Feels like</p>
+                    <p className="text-lg font-medium">
+                      {Math.round(weatherData.main.feels_like)}°C
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-500">Humidity</p>
+                    <p className="text-lg font-medium">
+                      {weatherData.main.humidity}%
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-gray-500">Wind Speed</p>
+                  <p className="text-lg font-medium">
+                    {Math.round(weatherData.wind.speed * 3.6)} km/h
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-500">Pressure</p>
+                  <p className="text-lg font-medium">
+                    {weatherData.main.pressure} hPa
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-500">Min Temp</p>
+                  <p className="text-lg font-medium">
+                    {Math.round(weatherData.main.temp_min)}°C
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-500">Max Temp</p>
+                  <p className="text-lg font-medium">
+                    {Math.round(weatherData.main.temp_max)}°C
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-500">Sunrise</p>
+                  <p className="text-lg font-medium">
+                    {formatTime(weatherData.sys.sunrise)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-500">Sunset</p>
+                  <p className="text-lg font-medium">
+                    {formatTime(weatherData.sys.sunset)}
+                  </p>
                 </div>
               </div>
             </div>
