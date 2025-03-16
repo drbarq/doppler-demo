@@ -26,14 +26,16 @@ interface WeatherData {
     sunset: number;
     country: string;
   };
+  timezone: number; // Timezone offset in seconds from UTC
 }
 
 export const WeatherWidget = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [city, setCity] = useState("London");
+  const [city, setCity] = useState("Denver");
   const [searchTerm, setSearchTerm] = useState(city);
+  const [useMetric, setUseMetric] = useState(false);
 
   const fetchWeather = async () => {
     setLoading(true);
@@ -76,17 +78,32 @@ export const WeatherWidget = () => {
   }, []);
 
   const formatTime = (timestamp: number) => {
-    return new Date(timestamp * 1000).toLocaleTimeString([], {
+    if (!weatherData) return "";
+    // Convert UTC timestamp to destination's local time
+    const localTime = new Date((timestamp + weatherData.timezone) * 1000);
+    return localTime.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
+      hour12: true,
+      timeZone: "UTC",
     });
+  };
+
+  const convertTemp = (celsius: number) => {
+    return useMetric ? celsius : (celsius * 9) / 5 + 32;
   };
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h3 className="text-xl font-semibold mb-4">
-        Test Weather API Integration
-      </h3>
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-xl font-semibold">Test Weather API Integration</h3>
+        <button
+          onClick={() => setUseMetric(!useMetric)}
+          className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-md"
+        >
+          {useMetric ? "Switch to °F" : "Switch to °C"}
+        </button>
+      </div>
 
       <div className="space-y-4">
         <div className="flex gap-2">
@@ -145,13 +162,15 @@ export const WeatherWidget = () => {
                   />
                 </div>
                 <div className="text-5xl font-bold mb-4">
-                  {Math.round(weatherData.main.temp)}°C
+                  {Math.round(convertTemp(weatherData.main.temp))}°
+                  {useMetric ? "C" : "F"}
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-gray-500">Feels like</p>
                     <p className="text-lg font-medium">
-                      {Math.round(weatherData.main.feels_like)}°C
+                      {Math.round(convertTemp(weatherData.main.feels_like))}°
+                      {useMetric ? "C" : "F"}
                     </p>
                   </div>
                   <div>
@@ -178,13 +197,15 @@ export const WeatherWidget = () => {
                 <div>
                   <p className="text-gray-500">Min Temp</p>
                   <p className="text-lg font-medium">
-                    {Math.round(weatherData.main.temp_min)}°C
+                    {Math.round(convertTemp(weatherData.main.temp_min))}°
+                    {useMetric ? "C" : "F"}
                   </p>
                 </div>
                 <div>
                   <p className="text-gray-500">Max Temp</p>
                   <p className="text-lg font-medium">
-                    {Math.round(weatherData.main.temp_max)}°C
+                    {Math.round(convertTemp(weatherData.main.temp_max))}°
+                    {useMetric ? "C" : "F"}
                   </p>
                 </div>
                 <div>
