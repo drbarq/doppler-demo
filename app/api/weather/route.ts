@@ -5,11 +5,11 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const city = searchParams.get("city") || "London";
 
-    const apiKey = process.env.OPENWEATHER_API_KEY;
+    const apiKey = process.env.OPENWEATHERMAP_API_KEY;
 
     if (!apiKey) {
       return NextResponse.json(
-        { message: "Weather API key is missing" },
+        { message: "OpenWeatherMap API key is missing" },
         { status: 500 }
       );
     }

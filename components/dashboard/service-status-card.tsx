@@ -7,6 +7,7 @@ interface ServiceStatusCardProps {
   logoSrc: string;
   checkStatus: () => Promise<{
     isConnected: boolean;
+    stripeConnected?: boolean;
     error?: string;
     type?: string;
     message?: string;
@@ -18,9 +19,9 @@ export const ServiceStatusCard = ({
   logoSrc,
   checkStatus,
 }: ServiceStatusCardProps) => {
-  const [status, setStatus] = useState<"checking" | "connected" | "error">(
-    "checking"
-  );
+  const [status, setStatus] = useState<
+    "checking" | "connected" | "error" | "partial"
+  >("checking");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [errorType, setErrorType] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
@@ -29,10 +30,29 @@ export const ServiceStatusCard = ({
     const checkConnection = async () => {
       try {
         const result = await checkStatus();
-        setStatus(result.isConnected ? "connected" : "error");
-        setErrorMessage(result.error || null);
-        setErrorType(result.type || null);
-        setStatusMessage(result.message || null);
+
+        // Special handling for Stripe Edge Function
+        if (serviceName === "Stripe") {
+          if (result.stripeConnected) {
+            setStatus("connected");
+          } else if (result.isConnected) {
+            setStatus("partial");
+            setErrorMessage(result.error || "Failed to connect to Stripe");
+            setErrorType(result.type || null);
+          } else {
+            setStatus("error");
+            setErrorMessage(
+              result.error || "Failed to connect to Edge Function"
+            );
+            setErrorType(result.type || null);
+          }
+          setStatusMessage(result.message || null);
+        } else {
+          setStatus(result.isConnected ? "connected" : "error");
+          setErrorMessage(result.error || null);
+          setErrorType(result.type || null);
+          setStatusMessage(result.message || null);
+        }
       } catch (error) {
         setStatus("error");
         setErrorMessage(
@@ -70,6 +90,12 @@ export const ServiceStatusCard = ({
                 Connected
               </span>
             )}
+            {status === "partial" && (
+              <span className="flex items-center text-amber-600">
+                <div className="w-2 h-2 rounded-full bg-amber-600 mr-2"></div>
+                Partially Connected
+              </span>
+            )}
             {status === "error" && (
               <span className="flex items-center text-red-600">
                 <div className="w-2 h-2 rounded-full bg-red-600 mr-2"></div>
@@ -81,20 +107,25 @@ export const ServiceStatusCard = ({
       </div>
 
       {/* Show error message with appropriate styling */}
-      {status === "error" && errorMessage && (
-        <div
-          className={`mt-2 text-sm ${
-            errorType === "env_missing"
-              ? "text-amber-600 bg-amber-50"
-              : "text-red-600 bg-red-50"
-          } rounded p-2`}
-        >
-          {errorMessage}
-          {errorType === "env_missing" && (
-            <div className="mt-1 text-xs text-amber-700">
-              💡 Tip: Run with Doppler to inject environment variables without
-              an .env file
-            </div>
+      {(status === "error" || status === "partial") && errorMessage && (
+        <div className="mt-2">
+          {serviceName === "Stripe" &&
+            (status === "partial" || errorType === "stripe_key_missing") && (
+              <>
+                <div className="text-green-600 mb-1">
+                  ✨ Connected to Supabase through Doppler!
+                </div>
+                <div className="text-amber-600">{errorMessage}</div>
+                <div className="text-amber-700 text-sm mt-1">
+                  💡 Tip: Set up a Doppler sync with Supabase to inject
+                  STRIPE_SECRET_KEY
+                </div>
+              </>
+            )}
+          {(!serviceName ||
+            serviceName !== "Stripe" ||
+            (errorType !== "stripe_key_missing" && status !== "partial")) && (
+            <div className="text-red-600">{errorMessage}</div>
           )}
         </div>
       )}
@@ -102,7 +133,7 @@ export const ServiceStatusCard = ({
       {/* Show success message when connected */}
       {status === "connected" && statusMessage && (
         <div className="mt-2 text-sm text-green-600 bg-green-50 rounded p-2">
-          ✨ {statusMessage}
+          {statusMessage}
         </div>
       )}
     </div>

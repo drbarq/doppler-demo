@@ -1,11 +1,13 @@
 export const checkWeatherApiConnection = async () => {
   try {
-    const apiKey = process.env.OPENWEATHER_API_KEY;
+    const apiKey = process.env.OPENWEATHERMAP_API_KEY;
 
     if (!apiKey) {
       return {
         isConnected: false,
         error: "OpenWeatherMap API key is missing",
+        type: "env_missing",
+        message: "No .env file needed - run with Doppler instead!",
       };
     }
 
@@ -20,13 +22,13 @@ export const checkWeatherApiConnection = async () => {
 
     return {
       isConnected: true,
+      message: "Connected to OpenWeatherMap without an .env file! ✨",
     };
   } catch (error) {
     return {
       isConnected: false,
-      error: `Failed to connect to OpenWeatherMap: ${
-        error instanceof Error ? error.message : "Unknown error"
-      }`,
+      error: error instanceof Error ? error.message : "Unknown error",
+      type: "connection_error",
     };
   }
 };
