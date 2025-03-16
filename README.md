@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Doppler Demo Dashboard
 
-## Getting Started
+This project is a demonstration dashboard that showcases the integration of multiple services using Doppler for secrets management. The dashboard includes status monitoring, payment processing, email testing, and weather information features.
 
-First, run the development server:
+## Features
+
+- Service Status Dashboard
+  - Real-time health checks for Supabase, Stripe, SendGrid, and OpenWeatherMap
+  - Visual status indicators with service logos
+- Stripe Payment Integration
+  - Test payment form with credit card processing
+  - Real-time validation and error handling
+- SendGrid Email Testing
+  - Email sending functionality test
+  - Success/error feedback
+- Weather Information Widget
+  - City-based weather data display
+  - Real-time weather updates from OpenWeatherMap
+
+## Prerequisites
+
+Before running this project, make sure you have:
+
+- Node.js (v18 or later)
+- npm or yarn
+- Accounts and API keys for:
+  - Supabase
+  - Stripe
+  - SendGrid
+  - OpenWeatherMap
+
+## Setup
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd doppler-demo
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Set up environment variables:
+
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local` and add your API keys and configuration values.
+
+4. Run the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the dashboard.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The following environment variables are required:
 
-## Learn More
+- `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous key
+- `SUPABASE_SERVICE_ROLE_KEY`: Your Supabase service role key
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`: Your Stripe publishable key
+- `STRIPE_SECRET_KEY`: Your Stripe secret key
+- `SENDGRID_API_KEY`: Your SendGrid API key
+- `SENDGRID_FROM_EMAIL`: Your verified sender email for SendGrid
+- `OPENWEATHERMAP_API_KEY`: Your OpenWeatherMap API key
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+doppler-demo/
+├── app/
+│   ├── api/
+│   │   ├── email/
+│   │   └── weather/
+│   └── dashboard/
+├── components/
+│   └── dashboard/
+│       ├── email-tester.tsx
+│       ├── payment-form.tsx
+│       ├── status-dashboard.tsx
+│       └── weather-widget.tsx
+├── public/
+│   └── images/
+│       └── service-logos/
+├── .env.example
+├── package.json
+└── README.md
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Contributing
 
-## Deploy on Vercel
+Feel free to submit issues and enhancement requests.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License - see the LICENSE file for details.
