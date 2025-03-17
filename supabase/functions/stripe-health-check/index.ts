@@ -31,7 +31,7 @@ serve(async (req) => {
           isConnected: true, // Edge Function is accessible
           stripeConnected: false,
           error:
-            "Connected to Supabase through Doppler! Now set up a Doppler sync with Supabase to inject STRIPE_SECRET_KEY",
+            "Now set up a Doppler sync with Supabase to inject STRIPE_SECRET_KEY",
           type: "stripe_key_missing",
           message:
             "Edge Function is running through Doppler, but Stripe key is not synced from Doppler",
