@@ -61,12 +61,18 @@ npm run dev
 # or
 yarn dev
 ```
+```
+doppler run --project doppler-demo --config dev -- npm run dev
+```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the dashboard.
 
 ## Environment Variables
 
 The following environment variables are required:
+
+
+
 
 - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous key
