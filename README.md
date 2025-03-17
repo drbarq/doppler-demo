@@ -10,9 +10,6 @@ This project is a demonstration dashboard that showcases the integration of mult
 - Stripe Payment Integration
   - Test payment form with credit card processing
   - Real-time validation and error handling
-- SendGrid Email Testing
-  - Email sending functionality test
-  - Success/error feedback
 - Weather Information Widget
   - City-based weather data display
   - Real-time weather updates from OpenWeatherMap
@@ -26,7 +23,6 @@ Before running this project, make sure you have:
 - Accounts and API keys for:
   - Supabase
   - Stripe
-  - SendGrid
   - OpenWeatherMap
 
 ## Setup
