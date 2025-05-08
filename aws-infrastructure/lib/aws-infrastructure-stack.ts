@@ -16,12 +16,8 @@ export class AwsInfrastructureStack extends Stack {
     //   visibilityTimeout: cdk.Duration.seconds(300)
     // });
 
-    // Reference the existing Stripe secret in Secrets Manager
-    const stripeSecret = secretsmanager.Secret.fromSecretCompleteArn(
-      this,
-      'StripeSecret',
-      'arn:aws:secretsmanager:us-east-1:714378673377:secret:stripe/secret-nmQB5S'
-    );
+    // Reference the new Stripe secret in Secrets Manager
+    const stripeSecret = secretsmanager.Secret.fromSecretCompleteArn(this, 'StripeSecret', 'arn:aws:secretsmanager:us-east-1:714378673377:secret:/doppler_demo/dev_dev_aws-HmFnKw');
 
     // Simple Lambda function
     const helloLambda = new lambda.Function(this, 'HelloLambda', {
@@ -44,7 +40,7 @@ export class AwsInfrastructureStack extends Stack {
       proxy: true,
     });
 
-    // Stripe Health Check Lambda (from asset)
+    // Stripe Health Check Lambda
     const stripeHealthCheckLambda = new lambda.Function(this, 'StripeHealthCheckLambda', {
       runtime: lambda.Runtime.NODEJS_18_X,
       handler: 'index.handler',
@@ -55,7 +51,7 @@ export class AwsInfrastructureStack extends Stack {
     });
     stripeSecret.grantRead(stripeHealthCheckLambda);
 
-    // Stripe Data Lambda (from asset)
+    // Stripe Data Lambda
     const stripeDataLambda = new lambda.Function(this, 'StripeDataLambda', {
       runtime: lambda.Runtime.NODEJS_18_X,
       handler: 'index.handler',
