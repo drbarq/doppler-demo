@@ -15,6 +15,7 @@
     "@stripe/react-stripe-js": "^2.6.2",
     "@stripe/stripe-js": "^3.0.10",
     "@supabase/supabase-js": "^2.39.8",
+    "aws-sdk": "^2.1692.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.482.0",
@@ -38,5 +39,21 @@
     "supabase": "^2.19.7",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
-  }
+  },
+  "description": "This project is a demonstration dashboard that showcases the integration of multiple services using Doppler for secrets management. The dashboard includes status monitoring, payment processing, email testing, and weather information features.",
+  "main": "postcss.config.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drbarq/doppler-demo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/drbarq/doppler-demo/issues"
+  },
+  "homepage": "https://github.com/drbarq/doppler-demo#readme"
 }

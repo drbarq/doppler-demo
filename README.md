@@ -5,7 +5,7 @@ This project is a demonstration dashboard that showcases the integration of mult
 ## Features
 
 - Service Status Dashboard
-  - Real-time health checks for Supabase, Stripe, SendGrid, and OpenWeatherMap
+  - Real-time health checks for Stripe, SendGrid, and OpenWeatherMap
   - Visual status indicators with service logos
 - Stripe Payment Integration
   - Test payment form with credit card processing
@@ -21,7 +21,6 @@ Before running this project, make sure you have:
 - Node.js (v18 or later)
 - npm or yarn
 - Accounts and API keys for:
-  - Supabase
   - Stripe
   - OpenWeatherMap
 
@@ -67,12 +66,6 @@ doppler run --project doppler-demo --config dev -- npm run dev
 
 The following environment variables are required:
 
-
-
-
-- `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous key
-- `SUPABASE_SERVICE_ROLE_KEY`: Your Supabase service role key
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`: Your Stripe publishable key
 - `STRIPE_SECRET_KEY`: Your Stripe secret key
 - `SENDGRID_API_KEY`: Your SendGrid API key

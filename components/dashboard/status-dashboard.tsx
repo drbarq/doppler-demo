@@ -2,31 +2,6 @@
 
 import { ServiceStatusCard } from "./service-status-card";
 
-async function checkSupabaseConnection() {
-  try {
-    const response = await fetch("/api/health/supabase");
-    if (!response.ok) {
-      throw new Error("Failed to fetch Supabase health status");
-    }
-    const data = await response.json();
-    return {
-      isConnected: data.isConnected,
-      error: data.error,
-      type: data.type,
-      message: data.message,
-    };
-  } catch (error) {
-    return {
-      isConnected: false,
-      error:
-        error instanceof Error
-          ? error.message
-          : "Failed to check Supabase connection",
-      type: "connection_error",
-    };
-  }
-}
-
 async function checkStripeConnection() {
   try {
     const response = await fetch("/api/health/stripe", {
@@ -71,12 +46,7 @@ async function checkWeatherApiConnection() {
 
 export const StatusDashboard = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-6xl mx-auto">
-      <ServiceStatusCard
-        serviceName="Supabase"
-        logoSrc="/images/service-logos/supabase.svg"
-        checkStatus={checkSupabaseConnection}
-      />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
       <ServiceStatusCard
         serviceName="Stripe"
         logoSrc="/images/service-logos/stripe.svg"

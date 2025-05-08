@@ -7,29 +7,6 @@ export interface ConfigError {
 export const validateConfig = (): ConfigError[] => {
   const errors: ConfigError[] = [];
 
-  // Supabase validation
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-    errors.push({
-      key: "NEXT_PUBLIC_SUPABASE_URL",
-      message: "Supabase URL is required",
-      serviceName: "Supabase",
-    });
-  }
-  if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    errors.push({
-      key: "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-      message: "Supabase anonymous key is required",
-      serviceName: "Supabase",
-    });
-  }
-  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    errors.push({
-      key: "SUPABASE_SERVICE_ROLE_KEY",
-      message: "Supabase service role key is required",
-      serviceName: "Supabase",
-    });
-  }
-
   // Stripe validation
   if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
     errors.push({

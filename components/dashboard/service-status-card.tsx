@@ -109,24 +109,7 @@ export const ServiceStatusCard = ({
       {/* Show error message with appropriate styling */}
       {(status === "error" || status === "partial") && errorMessage && (
         <div className="mt-2">
-          {serviceName === "Stripe" &&
-            (status === "partial" || errorType === "stripe_key_missing") && (
-              <>
-                <div className="text-green-600 mb-1">
-                  ✨ Connected to Supabase through Doppler!
-                </div>
-                <div className="text-amber-600">{errorMessage}</div>
-                <div className="text-amber-700 text-sm mt-1">
-                  💡 Tip: Set up a Doppler sync with Supabase to inject
-                  STRIPE_SECRET_KEY
-                </div>
-              </>
-            )}
-          {(!serviceName ||
-            serviceName !== "Stripe" ||
-            (errorType !== "stripe_key_missing" && status !== "partial")) && (
-            <div className="text-red-600">{errorMessage}</div>
-          )}
+          <div className="text-red-600">{errorMessage}</div>
         </div>
       )}
 
@@ -139,14 +122,3 @@ export const ServiceStatusCard = ({
     </div>
   );
 };
-
-function getMissingEnvVars(serviceName: string): string[] {
-  const requiredVars: Record<string, string[]> = {
-    Supabase: ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY"],
-    Stripe: ["NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "STRIPE_SECRET_KEY"],
-    OpenWeatherMap: ["OPENWEATHER_API_KEY"],
-  };
-
-  const vars = requiredVars[serviceName] || [];
-  return vars.filter((varName) => !process.env[varName]);
-}
