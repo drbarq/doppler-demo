@@ -129,11 +129,10 @@ export function StripeDataTables() {
       const responses = await Promise.all(
         endpoints.map((endpoint) =>
           fetch(
-            `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/stripe-data`,
+            process.env.NEXT_PUBLIC_STRIPE_DATA_URL!,
             {
               method: "POST",
               headers: {
-                Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({ endpoint }),

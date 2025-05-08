@@ -6,20 +6,26 @@ export async function POST(
 ) {
   try {
     const { endpoint } = params;
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/stripe-health-check/${endpoint}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
-        },
-      }
-    );
-
+    const stripeDataUrl = process.env.NEXT_PUBLIC_STRIPE_DATA_URL;
+    if (!stripeDataUrl) {
+      return NextResponse.json({
+        success: false,
+        error: "Missing Stripe Data endpoint URL",
+        type: "env_missing",
+        message: "Set NEXT_PUBLIC_STRIPE_DATA_URL in your environment variables.",
+      });
+    }
+    const response = await fetch(stripeDataUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ endpoint }),
+    });
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Error calling Stripe Edge Function:", error);
+    console.error("Error calling Stripe Data Lambda:", error);
     return NextResponse.json(
       {
         success: false,
