@@ -17,7 +17,7 @@ export class AwsInfrastructureStack extends Stack {
     // });
 
     // Reference the new Stripe secret in Secrets Manager
-    const stripeSecret = secretsmanager.Secret.fromSecretCompleteArn(this, 'StripeSecret', 'arn:aws:secretsmanager:us-east-1:714378673377:secret:/doppler_demo/dev_dev_aws-HmFnKw');
+    const stripeSecret = secretsmanager.Secret.fromSecretCompleteArn(this, 'StripeSecret', 'arn:aws:secretsmanager:us-east-1:714378673377:secret:/doppler_demo/dev_dev_aws-86v64m');
 
     // Simple Lambda function
     const helloLambda = new lambda.Function(this, 'HelloLambda', {
@@ -71,6 +71,20 @@ export class AwsInfrastructureStack extends Stack {
     // API Gateway for Stripe Data
     new apigateway.LambdaRestApi(this, 'StripeDataApi', {
       handler: stripeDataLambda,
+      proxy: true,
+    });
+
+    // AWS Health Check Lambda
+    const awsHealthCheckLambda = new lambda.Function(this, 'AwsHealthCheckLambda', {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset('lambda/aws-health-check'),
+      environment: {
+        AWS_HEALTH_SECRET: process.env.AWS_HEALTH_SECRET || 'your-aws-health-secret', // Set this in your .env or CDK context
+      },
+    });
+    new apigateway.LambdaRestApi(this, 'AwsHealthCheckApi', {
+      handler: awsHealthCheckLambda,
       proxy: true,
     });
   }
