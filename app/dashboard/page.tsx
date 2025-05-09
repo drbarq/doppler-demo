@@ -9,11 +9,12 @@ export default function DashboardPage() {
       <h1 className="text-3xl font-bold mb-8">Service Status Dashboard</h1>
 
       <div className="space-y-10">
-        <Suspense fallback={<div>Loading service status...</div>}>
-          <StatusDashboard />
-        </Suspense>
-
-        <div className="p-6 bg-white rounded-lg shadow-md">
+        <div className="flex flex-col md:flex-row md:space-x-4 md:space-y-0 space-y-4">
+          <div className="flex-1">
+            <Suspense fallback={<div>Loading service status...</div>}>
+              <StatusDashboard />
+            </Suspense>
+          </div>
           <WeatherWidget />
         </div>
 
